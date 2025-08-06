@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Training Library</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .resource { border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 8px; }
+    img { max-width: 200px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Searchable Training Library</h1>
+  <input type="text" id="searchBox" placeholder="Search by Title, Topic, or Type..." oninput="filterData()" style="width: 100%; padding: 10px; margin-bottom: 20px;">
+
+  <div id="library"></div>
+
+  <script>
+    let allResources = [];
+
+    fetch('https://teamavalonpontoons.com/api/traininglibrary.php')
+      .then(response => response.json())
+      .then(data => {
+        allResources = data;
+        displayData(data);
+      });
+
+    function displayData(data) {
+      const container = document.getElementById('library');
+      container.innerHTML = '';
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'resource';
+        div.innerHTML = `
+          <h2>${item.Title}</h2>
+          <p><strong>Topic:</strong> ${item.Topic}</p>
+          <p><strong>Type:</strong> ${item.Type}</p>
+          <p><strong>Condition:</strong> ${item.ResourceCondition}</p>
+          <p><strong>Value:</strong> $${item.Value}</p>
+          <p>${item.Description}</p>
+          <img src="${item.image}" alt="${item.Title}">
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function filterData() {
+      const query = document.getElementById('searchBox').value.toLowerCase();
+      const filtered = allResources.filter(item =>
+        item.Title.toLowerCase().includes(query) ||
+        item.Topic.toLowerCase().includes(query) ||
+        item.Type.toLowerCase().includes(query)
+      );
+      displayData(filtered);
+    }
+  </script>
+</body>
+</html>
