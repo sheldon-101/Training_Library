@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 let embeddedData = [];
-
+const test = 'test'
 function cosineSimilarity(a, b) {
   const dot = a.reduce((sum, ai, i) => sum + ai * b[i], 0);
   const normA = Math.sqrt(a.reduce((sum, ai) => sum + ai * ai, 0));
